@@ -31,7 +31,10 @@ class HomeScreen extends StatelessWidget {
                   if (snapshot.hasData) {
                     return SizedBox(
                       height: 200,
-                      child: makeMovieList(snapshot.data!),
+                      child: makeMovieList(
+                        snapshot.data!,
+                        isLargeCard: true,
+                      ),
                     );
                   }
                   return const Center(
@@ -92,7 +95,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  ListView makeMovieList(List<MovieModel> movies) {
+  ListView makeMovieList(List<MovieModel> movies, {bool isLargeCard = false}) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: movies.length,
@@ -107,16 +110,37 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           },
-          child: Container(
-            width: 300,
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Image.network(
-              'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
-              fit: BoxFit.cover,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: isLargeCard ? 300 : 150,
+                height: isLargeCard ? 200 : 150,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Image.network(
+                  'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              if (!isLargeCard) ...[
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 150,
+                  child: Text(
+                    movie.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ],
           ),
         );
       },
