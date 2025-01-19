@@ -61,7 +61,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.5),
+                        Colors.black54,
                         BlendMode.darken,
                       ),
                     ),
